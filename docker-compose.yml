@@ -1,0 +1,8 @@
+services: 
+  app: 
+    build: .
+    container_name: dt-money-application
+    ports: 
+      - 8080:8080
+    volumes:
+      - .:/usr/app

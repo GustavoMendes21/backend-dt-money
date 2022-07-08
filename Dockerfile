@@ -3,7 +3,7 @@ FROM node:alpine
 
 # Create app directory 
 # this is the location where you will be inside the container
-WORKDIR /usr/src/app
+WORKDIR /usr/app
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
