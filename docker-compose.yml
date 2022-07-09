@@ -1,4 +1,17 @@
 services: 
+  database-dt-money: 
+    image: postgres
+    container_name: dt-money-database
+    restart: always
+    ports:
+      - 5432:5432
+    environment: 
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=guga
+      - POSTGRES_DB=dt-money
+    volumes: 
+      - pgdata:/data/postgres     
+
   app: 
     build: .
     container_name: dt-money-application
@@ -6,3 +19,10 @@ services:
       - 8080:8080
     volumes:
       - .:/usr/app
+    links:
+      - database-dt-money
+    depends_on: 
+      - database-dt-money
+
+volumes: 
+  pgdata: 
