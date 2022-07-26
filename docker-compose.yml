@@ -6,9 +6,9 @@ services:
     ports:
       - 5432:5432
     environment: 
-      - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=guga
-      - POSTGRES_DB=dt-money
+      - POSTGRES_USER=${POSTGRES_USERNAME_KEY}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_KEY}
+      - POSTGRES_DB=${POSTGRES_DATABASE_KEY}
     volumes: 
       - pgdata:/data/postgres     
 
