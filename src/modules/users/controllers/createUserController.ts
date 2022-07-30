@@ -10,7 +10,7 @@ class CreateUserController {
 
     try {
       await createUserUseCase.execute({ name, email, password });
-      return response.status(201).json({ name, email, password });
+      return response.status(201).json({ name, email });
     } catch (error) {
       return response.status(409).json({ erro: error.message });
     }
