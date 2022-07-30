@@ -1,3 +1,5 @@
+import bcrypt from "bcrypt";
+
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
 
 interface ICreateUserDTO {
@@ -16,7 +18,9 @@ class CreateUserUseCase {
       throw new Error("A user with that email already exists");
     }
 
-    await userRepository.create({ name, email, password });
+    const hashPassword = bcrypt.hashSync(password, 10);
+
+    await userRepository.create({ name, email, password: hashPassword });
   }
 }
 
