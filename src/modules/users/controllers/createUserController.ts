@@ -5,11 +5,15 @@ import { CreateUserUseCase } from "../useCases/CreateUserUseCase";
 const createUserUseCase = new CreateUserUseCase();
 
 class CreateUserController {
-  handle(request: Request, response: Response) {
+  async handle(request: Request, response: Response) {
     const { name, email, password } = request.body;
-    createUserUseCase.execute({ name, email, password });
 
-    return response.status(201).send();
+    try {
+      await createUserUseCase.execute({ name, email, password });
+      return response.status(201).json({ name, email, password });
+    } catch (error) {
+      return response.status(409).json({ erro: error.message });
+    }
   }
 }
 
