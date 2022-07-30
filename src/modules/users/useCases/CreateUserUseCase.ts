@@ -9,8 +9,14 @@ interface ICreateUserDTO {
 const userRepository = new UsersRepository();
 
 class CreateUserUseCase {
-  execute({ name, email, password }: ICreateUserDTO) {
-    userRepository.create({ name, email, password });
+  async execute({ name, email, password }: ICreateUserDTO) {
+    const user = await userRepository.findByEmail({ email });
+
+    if (user) {
+      throw new Error("A user with that email already exists");
+    }
+
+    await userRepository.create({ name, email, password });
   }
 }
 
