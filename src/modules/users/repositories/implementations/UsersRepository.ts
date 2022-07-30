@@ -10,6 +10,10 @@ interface ICreateUserDTO {
   password: string;
 }
 
+interface IFindByEmailDTO {
+  email: string;
+}
+
 export class UsersRepository implements IUsersRepository {
   private repository: Repository<User>;
   constructor() {
@@ -20,5 +24,10 @@ export class UsersRepository implements IUsersRepository {
     const user = this.repository.create({ email, name, password });
 
     this.repository.save(user);
+  }
+
+  findByEmail({ email }: IFindByEmailDTO): Promise<User> {
+    const user = this.repository.findOne({ where: { email } });
+    return user;
   }
 }
