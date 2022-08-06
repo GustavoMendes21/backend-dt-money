@@ -1,9 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn } from "typeorm";
+import { v4 as uuidv4 } from "uuid";
 
 @Entity("users")
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  constructor() {
+    this.id = uuidv4();
+  }
+
+  @PrimaryColumn()
+  id: string;
 
   @Column()
   name: string;
