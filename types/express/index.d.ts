@@ -8,7 +8,7 @@ declare global {
     interface Request {
       UserAuthenticated: {
         Auth: boolean;
-        Name: any;
+        User: any;
       };
     }
   }
