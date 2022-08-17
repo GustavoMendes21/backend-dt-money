@@ -10,7 +10,7 @@ function AuthUser(request: Request, response: Response, next: NextFunction) {
 
   try {
     const tokenDecoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    request.UserAuthenticated = { Auth: true, Name: tokenDecoded };
+    request.UserAuthenticated = { Auth: true, User: tokenDecoded };
     next();
   } catch (error) {
     return response.status(401).json({ Message: "Token is not valid " });
