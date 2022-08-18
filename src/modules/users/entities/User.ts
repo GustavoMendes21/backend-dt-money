@@ -18,4 +18,10 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column()
+  passwordResetToken: string;
+
+  @Column()
+  passwordResetExpires: string;
 }
