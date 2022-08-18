@@ -20,9 +20,13 @@ class AuthenticateUserUseCase {
     const passwordIsCorrect = await bcrypt.compare(password, passwordHashed);
 
     if (passwordIsCorrect) {
-      const token = jwt.sign({ user: user.email }, process.env.JWT_SECRET_KEY, {
-        expiresIn: "2 days",
-      });
+      const token = jwt.sign(
+        { Email: user.email },
+        process.env.JWT_SECRET_KEY,
+        {
+          expiresIn: "2 days",
+        }
+      );
 
       return token;
     }
