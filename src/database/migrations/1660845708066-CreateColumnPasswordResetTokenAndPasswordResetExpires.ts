@@ -8,10 +8,12 @@ export class CreateColumnPasswordResetTokenAndPasswordResetExpires1660845708066
       new TableColumn({
         name: "passwordResetToken",
         type: "varchar",
+        isNullable: true,
       }),
       new TableColumn({
         name: "passwordResetExpires",
-        type: "varchar",
+        type: "timestamp",
+        isNullable: true,
       }),
     ]);
   }
