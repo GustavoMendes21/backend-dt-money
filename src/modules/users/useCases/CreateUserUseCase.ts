@@ -20,7 +20,11 @@ class CreateUserUseCase {
 
     const hashPassword = bcrypt.hashSync(password, 10);
 
-    await userRepository.create({ name, email, password: hashPassword });
+    try {
+      await userRepository.create({ name, email, password: hashPassword });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
 
