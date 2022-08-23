@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryColumn,
+  // eslint-disable-next-line prettier/prettier
+  UpdateDateColumn
+} from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
 @Entity("users")
@@ -19,9 +26,15 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
-  passwordResetToken: string;
+  @CreateDateColumn({ name: "created_at" })
+  createdAt?: Date;
 
-  @Column()
-  passwordResetExpires: string;
+  @UpdateDateColumn({ name: "updated_at" })
+  updatedAt?: Date;
+
+  @Column({ nullable: true })
+  passwordResetToken: string | null;
+
+  @Column({ nullable: true })
+  passwordResetExpires: Date | null;
 }
