@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 
+import { sendMailForgotPassword } from "../../../utils/mail/sendEmailForgotPassword";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
 
 interface IForgotPasswordUserDTO {
@@ -29,6 +30,8 @@ class ForgotPasswordUserUseCase {
     } catch (erro) {
       throw new Error(erro);
     }
+
+    await sendMailForgotPassword({ email: user.email, token });
   }
 }
 
