@@ -11,9 +11,7 @@ class ForgotPasswordUserController {
 
     try {
       await forgotPasswordUserUseCase.execute({ email });
-      return response
-        .status(201)
-        .json({ message: "Token Atualizado com sucesso" });
+      return response.status(201).json({ message: "Token Enviado" });
     } catch (error) {
       response.status(404).json({ erro: error.message });
     }
