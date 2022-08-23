@@ -14,6 +14,15 @@ interface IFindByEmailDTO {
   email: string;
 }
 
+interface IUpdateUserByEmail {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  passwordResetToken: string;
+  passwordResetExpires: Date;
+}
+
 export class UsersRepository implements IUsersRepository {
   private repository: Repository<User>;
   constructor() {
@@ -29,5 +38,23 @@ export class UsersRepository implements IUsersRepository {
   findByEmail({ email }: IFindByEmailDTO): Promise<User> {
     const user = this.repository.findOne({ where: { email } });
     return user;
+  }
+
+  async updateUser({
+    id,
+    email,
+    name,
+    password,
+    passwordResetExpires,
+    passwordResetToken,
+  }: IUpdateUserByEmail): Promise<void> {
+    await this.repository.save({
+      id,
+      email,
+      name,
+      password,
+      passwordResetExpires,
+      passwordResetToken,
+    });
   }
 }
