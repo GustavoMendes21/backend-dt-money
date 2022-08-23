@@ -29,14 +29,14 @@ export class UsersRepository implements IUsersRepository {
     this.repository = AppDataSource.getRepository(User);
   }
 
-  create({ email, name, password }: ICreateUserDTO): void {
+  async create({ email, name, password }: ICreateUserDTO): Promise<void> {
     const user = this.repository.create({ email, name, password });
 
-    this.repository.save(user);
+    await this.repository.save(user);
   }
 
-  findByEmail({ email }: IFindByEmailDTO): Promise<User> {
-    const user = this.repository.findOne({ where: { email } });
+  async findByEmail({ email }: IFindByEmailDTO): Promise<User> {
+    const user = await this.repository.findOne({ where: { email } });
     return user;
   }
 
