@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 
 import { createConnection } from "../data-source";
@@ -5,6 +6,7 @@ import { router } from "./routes";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 createConnection();
 
