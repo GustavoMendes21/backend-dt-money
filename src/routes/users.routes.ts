@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { AuthenticateUserController } from "../modules/users/controllers/AuthenticateUserController";
-import { CreateUserController } from "../modules/users/controllers/createUserController";
+import { CreateUserController } from "../modules/users/controllers/CreateUserController";
 import { ForgotPasswordUserController } from "../modules/users/controllers/ForgotPasswordUserController";
 import { RecoveryPasswordUserController } from "../modules/users/controllers/RecoveryPasswordUserController";
 import { CreateUserValidator } from "../validators/CreateUserValidator";
