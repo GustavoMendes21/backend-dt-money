@@ -8,12 +8,20 @@ class ForgotPasswordUserController {
   // eslint-disable-next-line consistent-return
   async handle(request: Request, response: Response) {
     const { email } = request.body;
-
     try {
-      await forgotPasswordUserUseCase.execute({ email });
-      return response.status(201).json({ message: "Token Enviado" });
+      const MessageSuccessOrError = await forgotPasswordUserUseCase.execute({
+        email,
+      });
+
+      if (MessageSuccessOrError.isLeft()) {
+        return response
+          .status(MessageSuccessOrError.value.statusCode)
+          .json(MessageSuccessOrError.value.message);
+      }
+
+      return response.status(201).json(MessageSuccessOrError.value);
     } catch (error) {
-      response.status(404).json({ erro: error.message });
+      return response.status(500).json("an unexpected error happened");
     }
   }
 }
