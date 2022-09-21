@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 
+import { Either, left, right } from "../../../errors/either";
+import { ResponseError } from "../../../errors/ResponseError";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
 
 interface IRecoveryPasswordUserUseCaseDTO {
@@ -8,6 +10,8 @@ interface IRecoveryPasswordUserUseCaseDTO {
   newPassword: string;
 }
 
+type RecoveryPasswordSuccessfully = string;
+type Response = Either<ResponseError, RecoveryPasswordSuccessfully>;
 const userRepository = new UsersRepository();
 
 class RecoveryPasswordUserUseCase {
@@ -15,17 +19,17 @@ class RecoveryPasswordUserUseCase {
     email,
     token,
     newPassword,
-  }: IRecoveryPasswordUserUseCaseDTO) {
+  }: IRecoveryPasswordUserUseCaseDTO): Promise<Response> {
     const user = await userRepository.findByEmail({ email });
 
     if (!user) {
-      throw new Error("Email is not exists");
+      return left(new ResponseError("E-mail informado não existe", 403));
     }
 
     const now = new Date();
 
     if (user.passwordResetToken !== token || now > user.passwordResetExpires) {
-      throw new Error("Token not is valid");
+      return left(new ResponseError("O Token não é válido ou já expirou", 403));
     }
 
     const hashPassword = bcrypt.hashSync(newPassword, 10);
@@ -34,8 +38,9 @@ class RecoveryPasswordUserUseCase {
 
     try {
       await userRepository.updateUser(user);
+      return right("Senha alterada com sucesso");
     } catch (error) {
-      throw new Error(error);
+      return left(new ResponseError("an unexpected error happened"));
     }
   }
 }
