@@ -6,12 +6,22 @@ const authenticateUserUseCase = new AuthenticateUserUseCase();
 
 class AuthenticateUserController {
   async handle(request: Request, response: Response) {
-    const { email, password } = request.body;
     try {
-      const token = await authenticateUserUseCase.execute({ email, password });
-      response.status(201).json({ token });
+      const { email, password } = request.body;
+      const tokenOrError = await authenticateUserUseCase.execute({
+        email,
+        password,
+      });
+
+      if (tokenOrError.isLeft()) {
+        return response
+          .status(tokenOrError.value.statusCode)
+          .json(tokenOrError.value.message);
+      }
+
+      return response.status(201).json(tokenOrError.value);
     } catch (error) {
-      response.status(400).json({ error });
+      return response.status(500).json("an unexpected error happened");
     }
   }
 }
