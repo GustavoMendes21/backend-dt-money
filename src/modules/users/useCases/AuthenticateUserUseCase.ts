@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+import { Either, left, right } from "../../../errors/either";
+import { ResponseError } from "../../../errors/ResponseError";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
 
 interface IAuthenticateUserDTO {
@@ -8,13 +10,17 @@ interface IAuthenticateUserDTO {
   password: string;
 }
 
+type AuthenticateUserSuccessfully = string;
+
+type Response = Either<ResponseError, AuthenticateUserSuccessfully>;
+
 const userRepository = new UsersRepository();
 
 class AuthenticateUserUseCase {
-  async execute({ email, password }: IAuthenticateUserDTO) {
+  async execute({ email, password }: IAuthenticateUserDTO): Promise<Response> {
     const user = await userRepository.findByEmail({ email });
     if (!user) {
-      throw new Error("Email not found");
+      return left(new ResponseError("E-mail informado não existe", 403));
     }
     const passwordHashed = user.password;
     const passwordIsCorrect = await bcrypt.compare(password, passwordHashed);
@@ -27,10 +33,10 @@ class AuthenticateUserUseCase {
           expiresIn: "2 days",
         }
       );
-
-      return token;
+      return right(token);
     }
-    throw new Error("Password is not correct");
+
+    return left(new ResponseError("Senha incorreta", 403));
   }
 }
 
