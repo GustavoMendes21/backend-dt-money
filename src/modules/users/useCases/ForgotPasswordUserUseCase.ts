@@ -1,5 +1,7 @@
 import crypto from "node:crypto";
 
+import { Either, left, right } from "../../../errors/either";
+import { ResponseError } from "../../../errors/ResponseError";
 import { sendMailForgotPassword } from "../../../utils/mail/sendEmailForgotPassword";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
 
@@ -7,14 +9,19 @@ interface IForgotPasswordUserDTO {
   email: string;
 }
 
+type ForgotPasswordUserSuccessfuly = string;
+
+type Response = Either<ResponseError, ForgotPasswordUserSuccessfuly>;
+
 const userRepository = new UsersRepository();
 
 class ForgotPasswordUserUseCase {
-  async execute({ email }: IForgotPasswordUserDTO) {
+  async execute({ email }: IForgotPasswordUserDTO): Promise<Response> {
     const user = await userRepository.findByEmail({ email });
+    console.log(user);
 
     if (!user) {
-      throw new Error("Email not exists");
+      return left(new ResponseError("E-mail informado não existe", 404));
     }
 
     const token = crypto.randomBytes(20).toString("hex");
@@ -28,10 +35,11 @@ class ForgotPasswordUserUseCase {
     try {
       await userRepository.updateUser(user);
     } catch (erro) {
-      throw new Error(erro);
+      return left(new ResponseError("an unexpected error happened"));
     }
 
     await sendMailForgotPassword({ email: user.email, token });
+    return right("Um token foi enviado ao respectivo e-mail");
   }
 }
 
