@@ -36,7 +36,9 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async findByEmail({ email }: IFindByEmailDTO): Promise<User> {
-    const user = await this.repository.findOne({ where: { email } });
+    const user = await this.repository.findOneBy({
+      email,
+    });
     return user;
   }
 
