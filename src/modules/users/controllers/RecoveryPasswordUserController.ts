@@ -9,10 +9,21 @@ class RecoveryPasswordUserController {
     const { email, token, newPassword } = request.body;
 
     try {
-      await recoveryPasswordUseCase.execute({ email, token, newPassword });
-      response.status(201).json({ message: "Password Updated" });
+      const MessageSuccessOrError = await recoveryPasswordUseCase.execute({
+        email,
+        token,
+        newPassword,
+      });
+
+      if (MessageSuccessOrError.isLeft()) {
+        return response
+          .status(MessageSuccessOrError.value.statusCode)
+          .json(MessageSuccessOrError.value.message);
+      }
+
+      return response.status(201).json(MessageSuccessOrError.value);
     } catch (error) {
-      response.status(401).json({ erro: error.message });
+      return response.status(500).json("an unexpected error happened");
     }
   }
 }
