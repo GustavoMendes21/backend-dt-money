@@ -18,7 +18,6 @@ const userRepository = new UsersRepository();
 class ForgotPasswordUserUseCase {
   async execute({ email }: IForgotPasswordUserDTO): Promise<Response> {
     const user = await userRepository.findByEmail({ email });
-    console.log(user);
 
     if (!user) {
       return left(new ResponseError("E-mail informado não existe", 404));
