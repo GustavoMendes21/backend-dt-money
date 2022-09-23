@@ -10,7 +10,7 @@ export const AppDataSource = new DataSource({
   database: process.env.POSTGRES_DATABASE_KEY,
   entities: ["./src/modules/**/entities/*.ts"],
   migrations: ["./src/database/migrations/*.ts"],
-  synchronize: true,
+  synchronize: false,
 });
 
 export function createConnection() {

@@ -14,20 +14,49 @@ interface IFindByEmailDTO {
   email: string;
 }
 
+interface IUpdateUserByEmail {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  passwordResetToken: string;
+  passwordResetExpires: Date;
+}
+
 export class UsersRepository implements IUsersRepository {
   private repository: Repository<User>;
   constructor() {
     this.repository = AppDataSource.getRepository(User);
   }
 
-  create({ email, name, password }: ICreateUserDTO): void {
+  async create({ email, name, password }: ICreateUserDTO): Promise<void> {
     const user = this.repository.create({ email, name, password });
 
-    this.repository.save(user);
+    await this.repository.save(user);
   }
 
-  findByEmail({ email }: IFindByEmailDTO): Promise<User> {
-    const user = this.repository.findOne({ where: { email } });
+  async findByEmail({ email }: IFindByEmailDTO): Promise<User> {
+    const user = await this.repository.findOneBy({
+      email,
+    });
     return user;
+  }
+
+  async updateUser({
+    id,
+    email,
+    name,
+    password,
+    passwordResetExpires,
+    passwordResetToken,
+  }: IUpdateUserByEmail): Promise<void> {
+    await this.repository.save({
+      id,
+      email,
+      name,
+      password,
+      passwordResetExpires,
+      passwordResetToken,
+    });
   }
 }
