@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { validationResult } from "express-validator";
 
 import { ForgotPasswordUserUseCase } from "../useCases/ForgotPasswordUserUseCase";
 
@@ -8,6 +9,12 @@ class ForgotPasswordUserController {
   // eslint-disable-next-line consistent-return
   async handle(request: Request, response: Response) {
     const { email } = request.body;
+    const errors = validationResult(request);
+
+    if (!errors.isEmpty()) {
+      return response.status(400).json({ InvalidFields: errors.array() });
+    }
+
     try {
       const MessageSuccessOrError = await forgotPasswordUserUseCase.execute({
         email,

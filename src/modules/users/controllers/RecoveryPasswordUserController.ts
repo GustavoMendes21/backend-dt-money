@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { validationResult } from "express-validator";
 
 import { RecoveryPasswordUserUseCase } from "../useCases/RecoveryPasswordUserUseCase";
 
@@ -7,6 +8,11 @@ const recoveryPasswordUseCase = new RecoveryPasswordUserUseCase();
 class RecoveryPasswordUserController {
   async handle(request: Request, response: Response) {
     const { email, token, newPassword } = request.body;
+    const errors = validationResult(request);
+
+    if (!errors.isEmpty()) {
+      return response.status(400).json({ InvalidFields: errors.array() });
+    }
 
     try {
       const MessageSuccessOrError = await recoveryPasswordUseCase.execute({

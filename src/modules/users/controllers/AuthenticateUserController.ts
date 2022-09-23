@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { validationResult } from "express-validator";
 
 import { AuthenticateUserUseCase } from "../useCases/AuthenticateUserUseCase";
 
@@ -6,6 +7,12 @@ const authenticateUserUseCase = new AuthenticateUserUseCase();
 
 class AuthenticateUserController {
   async handle(request: Request, response: Response) {
+    const errors = validationResult(request);
+
+    if (!errors.isEmpty()) {
+      return response.status(400).json({ InvalidFields: errors.array() });
+    }
+
     try {
       const { email, password } = request.body;
       const tokenOrError = await authenticateUserUseCase.execute({
