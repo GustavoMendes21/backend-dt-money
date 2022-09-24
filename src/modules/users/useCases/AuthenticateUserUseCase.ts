@@ -9,8 +9,18 @@ interface IAuthenticateUserDTO {
   email: string;
   password: string;
 }
+type UserLogged = {
+  id: string;
+  name: string;
+  email: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
 
-type AuthenticateUserSuccessfully = string;
+type AuthenticateUserSuccessfully = {
+  token: string;
+  userLogged: UserLogged;
+};
 
 type Response = Either<ResponseError, AuthenticateUserSuccessfully>;
 
@@ -26,6 +36,8 @@ class AuthenticateUserUseCase {
     const passwordIsCorrect = await bcrypt.compare(password, passwordHashed);
 
     if (passwordIsCorrect) {
+      const { id, name, email, createdAt, updatedAt }: UserLogged = user;
+
       const token = jwt.sign(
         { Email: user.email },
         process.env.JWT_SECRET_KEY,
@@ -33,7 +45,16 @@ class AuthenticateUserUseCase {
           expiresIn: "2 days",
         }
       );
-      return right(token);
+      return right({
+        token,
+        userLogged: {
+          id,
+          name,
+          email,
+          createdAt,
+          updatedAt,
+        },
+      });
     }
 
     return left(new ResponseError("Senha incorreta", 403));
