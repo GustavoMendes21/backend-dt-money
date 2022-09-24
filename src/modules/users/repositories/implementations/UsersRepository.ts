@@ -14,6 +14,10 @@ interface IFindByEmailDTO {
   email: string;
 }
 
+interface IFindByUserId {
+  id: string;
+}
+
 interface IUpdateUserByEmail {
   id: string;
   name: string;
@@ -42,7 +46,7 @@ export class UsersRepository implements IUsersRepository {
     return user;
   }
 
-  async findByUserId({ id }) {
+  async findByUserId({ id }: IFindByUserId) {
     if (id !== undefined) {
       const user = await this.repository.findOneBy({ id });
       return user;
