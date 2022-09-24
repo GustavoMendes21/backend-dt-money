@@ -25,7 +25,6 @@ class CreateTransactionsUseCase {
     title,
     transactionDate,
     userId,
-    value,
     amount,
     type,
   }: ITransactionParams): Promise<Response> {
