@@ -16,7 +16,10 @@ export class Transaction {
   title: string;
 
   @Column()
-  value: number;
+  amount: number;
+
+  @Column()
+  type: string;
 
   @Column()
   category: string;

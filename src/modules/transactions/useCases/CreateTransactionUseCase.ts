@@ -15,7 +15,8 @@ interface ITransactionParams {
   title: string;
   transactionDate: Date;
   userId: string;
-  value: number;
+  amount: number;
+  type: string;
 }
 
 class CreateTransactionsUseCase {
@@ -25,6 +26,8 @@ class CreateTransactionsUseCase {
     transactionDate,
     userId,
     value,
+    amount,
+    type,
   }: ITransactionParams): Promise<Response> {
     const user = await usersRepository.findByUserId({ id: userId });
 
@@ -39,7 +42,8 @@ class CreateTransactionsUseCase {
       title,
       transactionDate: date,
       userId: user.id,
-      value,
+      amount,
+      type,
     });
 
     return right("Transaction Created");

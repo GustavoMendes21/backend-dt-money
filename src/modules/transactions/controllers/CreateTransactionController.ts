@@ -6,13 +6,15 @@ const createTransactionsUseCase = new CreateTransactionsUseCase();
 
 class CreateTransactionController {
   async handle(request: Request, response: Response) {
-    const { userId, title, value, category, transactionDate } = request.body;
+    const { userId, title, amount, type, category, transactionDate } =
+      request.body;
 
     try {
       const messageSuccessOrError = await createTransactionsUseCase.execute({
         userId,
         title,
-        value,
+        amount,
+        type,
         category,
         transactionDate,
       });

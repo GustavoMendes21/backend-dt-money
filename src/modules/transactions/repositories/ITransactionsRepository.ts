@@ -2,8 +2,9 @@ export interface ITransaction {
   id: string;
   userId: string;
   title: string;
-  value: number;
+  amount: number;
   category: string;
+  type: string;
   transactionDate: Date;
   createdAt: Date;
 }
@@ -11,8 +12,9 @@ export interface ITransaction {
 export interface ICreateTransactionDTO {
   userId: string;
   title: string;
-  value: number;
+  amount: number;
   category: string;
+  type: string;
   transactionDate: Date;
 }
 
@@ -22,7 +24,8 @@ interface ITransactionsRepository {
     userId,
     title,
     transactionDate,
-    value,
+    amount,
+    type,
   }: ICreateTransactionDTO): void;
   findByUserId(userId: string): Promise<ITransaction[]>;
 }

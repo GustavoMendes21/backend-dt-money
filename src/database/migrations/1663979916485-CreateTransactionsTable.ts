@@ -22,8 +22,12 @@ export class CreateTransactionsTable1663979916485
             type: "varchar",
           },
           {
-            name: "value",
+            name: "amount",
             type: "numeric",
+          },
+          {
+            name: "type",
+            type: "varchar",
           },
           {
             name: "category",

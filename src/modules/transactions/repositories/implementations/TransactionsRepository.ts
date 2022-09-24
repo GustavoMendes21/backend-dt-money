@@ -21,14 +21,16 @@ class TransactionRepository implements ITransactionsRepository {
     userId,
     title,
     transactionDate,
-    value,
+    amount,
+    type,
   }: ICreateTransactionDTO): Promise<void> {
     const transaction = this.repository.create({
-      category,
       userId,
+      amount,
+      category,
       title,
       transactionDate,
-      value,
+      type,
     });
 
     await this.repository.save(transaction);
