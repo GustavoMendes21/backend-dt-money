@@ -1,11 +1,12 @@
 import { Router } from "express";
 
 import { AuthUser } from "../middleware/AuthUser";
+import { CreateTransactionController } from "../modules/transactions/controllers/CreateTransactionController";
 
 const transactionsRouter = Router();
 
-transactionsRouter.get("/teste", AuthUser, (req, res) => {
-  res.json("teste");
-});
+const createTransactionController = new CreateTransactionController();
+
+transactionsRouter.get("/create", AuthUser, createTransactionController.handle);
 
 export { transactionsRouter };
