@@ -5,6 +5,7 @@ export interface ITransaction {
   value: number;
   category: string;
   transactionDate: Date;
+  createdAt: Date;
 }
 
 export interface ICreateTransactionDTO {
