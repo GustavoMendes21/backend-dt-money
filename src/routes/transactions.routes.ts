@@ -15,8 +15,8 @@ transactionsRouter.post(
   createTransactionController.handle
 );
 
-transactionsRouter.post(
-  "/listByUserId",
+transactionsRouter.get(
+  "/listByUserId/:userId",
   AuthUser,
   listTransactionController.handle
 );

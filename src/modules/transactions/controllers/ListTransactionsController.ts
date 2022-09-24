@@ -6,7 +6,7 @@ const listTransactionsUseCase = new ListTransactionUseCase();
 
 class ListTransactionsController {
   async handle(request: Request, response: Response) {
-    const { userId } = request.body;
+    const { userId } = request.params;
 
     try {
       const TransactionsOrError = await listTransactionsUseCase.execute({
