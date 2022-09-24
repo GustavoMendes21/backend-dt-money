@@ -25,5 +25,5 @@ export class Transaction {
   transactionDate: Date;
 
   @CreateDateColumn({ name: "createdAt" })
-  createdAt: string;
+  createdAt: Date;
 }
