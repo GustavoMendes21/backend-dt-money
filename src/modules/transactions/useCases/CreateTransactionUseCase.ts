@@ -2,13 +2,12 @@ import { Either, left, right } from "../../../errors/either";
 import { ResponseError } from "../../../errors/ResponseError";
 import { UsersRepository } from "../../users/repositories/implementations/UsersRepository";
 import { TransactionRepository } from "../repositories/implementations/TransactionsRepository";
+import { ITransaction } from "../repositories/ITransactionsRepository";
 
 const transactionRepository = new TransactionRepository();
 const usersRepository = new UsersRepository();
 
-type TransactionSuccessfully = string;
-
-type Response = Either<ResponseError, TransactionSuccessfully>;
+type Response = Either<ResponseError, ITransaction>;
 
 interface ITransactionParams {
   category: string;
@@ -36,7 +35,7 @@ class CreateTransactionsUseCase {
 
     const date = new Date(transactionDate);
 
-    await transactionRepository.createTransaction({
+    const newTransaction = await transactionRepository.createTransaction({
       category,
       title,
       transactionDate: date,
@@ -45,7 +44,7 @@ class CreateTransactionsUseCase {
       type,
     });
 
-    return right("Transaction Created");
+    return right(newTransaction);
   }
 }
 

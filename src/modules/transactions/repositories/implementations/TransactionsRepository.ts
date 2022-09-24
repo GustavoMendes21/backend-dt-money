@@ -23,7 +23,7 @@ class TransactionRepository implements ITransactionsRepository {
     transactionDate,
     amount,
     type,
-  }: ICreateTransactionDTO): Promise<void> {
+  }: ICreateTransactionDTO): Promise<ITransaction> {
     const transaction = this.repository.create({
       userId,
       amount,
@@ -33,7 +33,7 @@ class TransactionRepository implements ITransactionsRepository {
       type,
     });
 
-    await this.repository.save(transaction);
+    return this.repository.save(transaction);
   }
 
   async findByUserId(userId: string): Promise<ITransaction[]> {

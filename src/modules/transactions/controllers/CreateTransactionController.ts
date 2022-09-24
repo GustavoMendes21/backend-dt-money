@@ -10,7 +10,7 @@ class CreateTransactionController {
       request.body;
 
     try {
-      const messageSuccessOrError = await createTransactionsUseCase.execute({
+      const TransactionOrError = await createTransactionsUseCase.execute({
         userId,
         title,
         amount,
@@ -19,13 +19,13 @@ class CreateTransactionController {
         transactionDate,
       });
 
-      if (messageSuccessOrError.isLeft()) {
+      if (TransactionOrError.isLeft()) {
         return response
-          .status(messageSuccessOrError.value.statusCode)
-          .json(messageSuccessOrError.value.message);
+          .status(TransactionOrError.value.statusCode)
+          .json(TransactionOrError.value.message);
       }
 
-      return response.status(200).json("Transação criada com sucesso");
+      return response.status(200).json(TransactionOrError.value);
     } catch (error) {
       return response.status(500).json("An unexpected error happened");
     }
