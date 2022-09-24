@@ -1,8 +1,10 @@
-import { Either, right } from "../../../errors/either";
+import { Either, left, right } from "../../../errors/either";
 import { ResponseError } from "../../../errors/ResponseError";
+import { UsersRepository } from "../../users/repositories/implementations/UsersRepository";
 import { TransactionRepository } from "../repositories/implementations/TransactionsRepository";
 
 const transactionRepository = new TransactionRepository();
+const usersRepository = new UsersRepository();
 
 type TransactionSuccessfully = string;
 
@@ -24,13 +26,19 @@ class CreateTransactionsUseCase {
     userId,
     value,
   }: ITransactionParams): Promise<Response> {
+    const user = await usersRepository.findByUserId({ id: userId });
+
+    if (!user) {
+      return left(new ResponseError("ID do usuário não encontrado", 404));
+    }
+
     const date = new Date(transactionDate);
 
     await transactionRepository.createTransaction({
       category,
       title,
       transactionDate: date,
-      userId,
+      userId: user.id,
       value,
     });
 
