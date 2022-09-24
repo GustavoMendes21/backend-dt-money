@@ -42,6 +42,15 @@ export class UsersRepository implements IUsersRepository {
     return user;
   }
 
+  async findByUserId({ id }) {
+    if (id !== undefined) {
+      const user = await this.repository.findOneBy({ id });
+      return user;
+    }
+
+    return null;
+  }
+
   async updateUser({
     id,
     email,
