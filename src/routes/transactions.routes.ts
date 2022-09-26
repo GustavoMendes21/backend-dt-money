@@ -1,11 +1,24 @@
 import { Router } from "express";
 
 import { AuthUser } from "../middleware/AuthUser";
+import { CreateTransactionController } from "../modules/transactions/controllers/CreateTransactionController";
+import { ListTransactionsController } from "../modules/transactions/controllers/ListTransactionsController";
 
 const transactionsRouter = Router();
 
-transactionsRouter.get("/teste", AuthUser, (req, res) => {
-  res.json("teste");
-});
+const createTransactionController = new CreateTransactionController();
+const listTransactionController = new ListTransactionsController();
+
+transactionsRouter.post(
+  "/create",
+  AuthUser,
+  createTransactionController.handle
+);
+
+transactionsRouter.get(
+  "/listByUserId/:userId",
+  AuthUser,
+  listTransactionController.handle
+);
 
 export { transactionsRouter };

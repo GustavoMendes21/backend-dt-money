@@ -10,9 +10,14 @@ interface IFindByEmailDTO {
   email: string;
 }
 
+interface IFindByUserId {
+  id: string;
+}
+
 interface IUsersRepository {
   create({ email, name, password }: ICreateUserDTO): void;
   findByEmail({ email }: IFindByEmailDTO): Promise<User>;
+  findByUserId({ id }: IFindByUserId): Promise<User>;
 }
 
 export { IUsersRepository };
